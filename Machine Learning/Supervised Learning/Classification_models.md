@@ -43,6 +43,7 @@ Image(graph.create_png())
 ## Classification metrics
 
 ### Accuracy
-![image](https://user-images.githubusercontent.com/11130916/126872394-ec6b23fd-1ddc-412f-914c-4f529c3bddfd.png)
+Accuracy = {# correct predictions} / {# all predictions}
+Problem: not useful if umbalanced dataset
 
-<img src="https://render.githubusercontent.com/render/math?math=Accuracy = \frac{Num correct predictions}{Num all predictions}">
+### Confusion Matrix
