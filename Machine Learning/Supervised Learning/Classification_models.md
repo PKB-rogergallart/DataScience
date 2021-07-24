@@ -68,3 +68,4 @@ Type II error = FN
 There is a trade-off between them: increasing precision decreases recall and viceversa.
 
 ### F1 Score
+- F1 Score = Harmonic mean of Precision and Recall
