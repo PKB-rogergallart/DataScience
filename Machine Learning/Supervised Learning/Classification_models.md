@@ -50,7 +50,7 @@ Accuracy = {# correct predictions} / {# all predictions}
 Problem: not useful if umbalanced dataset
 
 ### Confusion Matrix
-![Confusion Matrix](/Assets/confusion_matrix.png)
+![Confusion Matrix](/Assets/confusion_matrix_metrics.png)
 
 Type I error = FP
 
