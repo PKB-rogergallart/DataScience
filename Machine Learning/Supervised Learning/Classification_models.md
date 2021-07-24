@@ -45,13 +45,15 @@ Image(graph.create_png())
 References:
 https://towardsdatascience.com/how-to-best-evaluate-a-classification-model-2edb12bcc587
 
-### Accuracy
-Accuracy = {# correct predictions} / {# all predictions}
-Problem: not useful if umbalanced dataset
-
 ### Confusion Matrix
 ![Confusion Matrix](/Assets/confusion_matrix_metrics.png)
 
+### Accuracy
+Accuracy = {# correct predictions} / {# all predictions}
+
+Problem: not useful if imbalanced dataset.
+
+### Errors type I and II
 Type I error = FP
 
 Type II error = FN
@@ -61,6 +63,7 @@ Type II error = FN
 - Precision = TP / (TP + FP)
   How good our model is when the prediction is positive.
   Focus on **positive predictions** --> How many positive predictions are correct (true).
+
 - Recall = TP / (TP + FN)
   How good our model is at predicting positive classes.
   Focus on **actual positive classes** --> How many of the positive classes the model can predict correctly.
@@ -68,4 +71,13 @@ Type II error = FN
 There is a trade-off between them: increasing precision decreases recall and viceversa.
 
 ### F1 Score
-- F1 Score = Harmonic mean of Precision and Recall
+F1 Score = 2 * Precision * Recall / (Precision + Recall)
+
+It's the harmonic mean of Precision and Recall.
+
+More useful for imbalanced datasets because it takes into account both FP and FN.
+
+### Sensitivity and Specificity
+
+- Sensitivity = True Positive Rate (TPR) = Recall = Proportion os positive class correctly predicted as positive
+- Specificity = Proportion of negative class correctly predicted as negative
