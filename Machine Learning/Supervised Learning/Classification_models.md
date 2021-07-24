@@ -42,8 +42,29 @@ Image(graph.create_png())
 
 ## Classification metrics
 
+References:
+https://towardsdatascience.com/how-to-best-evaluate-a-classification-model-2edb12bcc587
+
 ### Accuracy
 Accuracy = {# correct predictions} / {# all predictions}
 Problem: not useful if umbalanced dataset
 
 ### Confusion Matrix
+![Confusion Matrix](/Assets/confusion_matrix.png)
+
+Type I error = FP
+
+Type II error = FN
+
+### Precision and Recall
+
+- Precision = TP / (TP + FP)
+  How good our model is when the prediction is positive.
+  Focus on **positive predictions** --> How many positive predictions are correct (true).
+- Recall = TP / (TP + FN)
+  How good our model is at predicting positive classes.
+  Focus on **actual positive classes** --> How many of the positive classes the model can predict correctly.
+  
+There is a trade-off between them: increasing precision decreases recall and viceversa.
+
+### F1 Score
