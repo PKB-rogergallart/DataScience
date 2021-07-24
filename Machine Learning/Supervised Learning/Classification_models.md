@@ -1,6 +1,7 @@
-# Classification Models
+# Classification
 
-## Decision Trees
+## Models
+### Decision Trees
 
 - Terminology: Root Node, Decision Node, Leaf Node, purity/impurity, pruning
 
@@ -38,3 +39,5 @@ graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
 graph.write_png('diabetes.png')
 Image(graph.create_png())
 ```
+
+## Classification metrics
