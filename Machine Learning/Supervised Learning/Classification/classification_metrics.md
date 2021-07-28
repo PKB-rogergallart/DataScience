@@ -7,8 +7,19 @@ https://towardsdatascience.com/how-to-best-evaluate-a-classification-model-2edb1
 ### Confusion Matrix
 ![Confusion Matrix](/Assets/confusion_matrix_metrics.png)
 
+```python
+from sklearn import metrics
+metrics.confusion_matrix(y_test, y_pred_class)
+```
 ### Accuracy
 Accuracy = {# correct predictions} / {# all predictions}
+
+Need to be compared with the **Null Accuracy** which is the accuracy achieved by always predicting the most frequent class.
+
+```python
+# Trick for binary classification (y_test = 0 or 1)
+null_accuracy = max(y_test.mean(), 1-y_test.mean())
+```
 
 Problem: not useful if imbalanced dataset.
 
@@ -16,6 +27,8 @@ Problem: not useful if imbalanced dataset.
 Type I error = FP
 
 Type II error = FN
+
+Classification Error = Misclassification Rate = (FP + FN) / (TP + TN + FP + FN)
 
 ### Precision and Recall
 
@@ -38,5 +51,15 @@ More useful for imbalanced datasets because it takes into account both FP and FN
 
 ### Sensitivity and Specificity
 
-- Sensitivity = True Positive Rate (TPR) = Recall = Proportion os positive class correctly predicted as positive
+- Sensitivity = True Positive Rate (TPR) = Recall = Proportion of positive class correctly predicted as positive
 - Specificity = 1 - FPR = Proportion of negative class correctly predicted as negative
+
+### ROC and AUC
+
+- ROC = Receiving Operating Characteristics. Plot of FPR vs TPR for different threshold values (in logistic regression)
+- AUC = Area under the curve. Allows to compare different models (the higher AUC the better)
+
+x-axis = TPR = Sensitivity = TP / (TP + FN)
+
+y-axis = FPR = 1 - Specificity = FP / (TN + FP)
+
