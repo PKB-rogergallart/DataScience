@@ -11,8 +11,10 @@ https://towardsdatascience.com/hackcvilleds-4636c6c1ba53
 ![Confusion Matrix](/Assets/confusion_matrix_metrics.png)
 
 ```python
-from sklearn import metrics
-metrics.confusion_matrix(y_test, y_pred_class)
+from sklearn.metrics import confusion_matrix, classification_report
+confusion_matrix(y_test, y_pred)
+classification_report(y_test, y_pred) #Precision, Recall, F1 score
+
 ```
 ### Accuracy
 Accuracy = {# correct predictions} / {# all predictions}
