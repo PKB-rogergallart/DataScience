@@ -81,3 +81,17 @@ Good accuracy | Not suitable for large datasets (high training time)
 Faster prediction than Naive Bayes | Slower training than NB
 Low memory | Works poorly with overlapping classes
 Works well with clear spearation and high dimensional space | Sensitive to the type of kernel used
+
+## XGBoost (Extreme Gradient Boosting)
+
+```python
+import xgboost as xgb
+```
+
+Most important hyperparameters for DT based XGBoost:
+- learning_rate: step size shrinkage used to prevent overfitting. Range is [0,1]
+- max_depth: determines how deeply each tree is allowed to grow during any boosting round.
+- subsample: percentage of samples used per tree. Low value can lead to underfitting.
+- colsample_bytree: percentage of features used per tree. High value can lead to overfitting.
+- n_estimators: number of trees you want to build.
+- objective: determines the loss function to be used like reg:linear for regression problems, reg:logistic for classification problems with only decision, binary:logistic for classification problems with probability.
