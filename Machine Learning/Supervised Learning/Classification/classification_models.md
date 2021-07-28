@@ -38,3 +38,15 @@ graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
 graph.write_png('diabetes.png')
 Image(graph.create_png())
 ```
+
+## K-Nearest Neighbours (KNN)
+- Non-parametric learning algorithm
+- Laxy learning algorithm (no specialised training phase)
+
+Pros | Cons
+-----|-----
+Easy to implement | Does not work well with high dimensional data
+Lazy learning (no training phase) | High prediction cost for large datasets
+New data can be added seamlessly | Does not work well with categorical data
+Distribution agnostic | -
+Only 2 hyperparameters<br>(K and distance) | -
