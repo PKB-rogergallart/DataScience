@@ -101,3 +101,7 @@ from sklearn.metrics import average_precision_score
 f1 = f1_score(y_test, y_pred_prob)
 ap = average_precision_score(y_test, y_pred_prob)
 ```
+
+### Kappa (or Cohen’s kappa)
+- Kappa = Classification accuracy normalized by the imbalance of the classes in the data.
+https://en.wikipedia.org/wiki/Cohen%27s_kappa
