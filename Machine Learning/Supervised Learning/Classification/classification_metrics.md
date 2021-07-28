@@ -12,9 +12,17 @@ https://towardsdatascience.com/hackcvilleds-4636c6c1ba53
 
 ```python
 from sklearn.metrics import confusion_matrix, classification_report
-confusion_matrix(y_test, y_pred)
+import seaborn as sns
+import matplotlib.pyplot as plt
+
 classification_report(y_test, y_pred) #Precision, Recall, F1 score
 
+cm = confusion_matrix(y_test, y_pred)
+plt.figure(figsize=(9,9))
+sns.heatmap(cm, annot=True, fmt=".3f", linewidths=.5, square = True, cmap = 'Blues_r');
+plt.ylabel('Actual label');
+plt.xlabel('Predicted label');
+plt.title('Confusion Matrix', size = 15);
 ```
 ### Accuracy
 Accuracy = {# correct predictions} / {# all predictions}
