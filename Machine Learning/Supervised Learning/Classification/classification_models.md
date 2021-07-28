@@ -50,3 +50,19 @@ Lazy learning (no training phase) | High prediction cost for large datasets
 New data can be added seamlessly | Does not work well with categorical data
 Distribution agnostic | -
 Only 2 hyperparameters<br>(K and distance) | -
+
+## Logistic Regression
+
+- Binary classification. Predicts probability of occurrence using a logit (sigmoid) function
+- MLE = Maximum Likelihood Estimation
+- Types:
+  - Binary Logistic Regression
+  - Multinomial Logistic Regression
+  - Ordinal Logistic Regression
+
+Pros | Cons
+-----|-----
+Easy to implement | Not able to handle large number of categorical features
+No scaling required | Can't solve non-linear problems (except if non-linear transforms used)
+Provides probability score | Not perform well if features not correlated to target and very similar/corerlated to each other.
+
