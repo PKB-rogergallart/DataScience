@@ -66,3 +66,18 @@ Easy to implement | Not able to handle large number of categorical features
 No scaling required | Can't solve non-linear problems (except if non-linear transforms used)
 Provides probability score | Not perform well if features not correlated to target and very similar/corerlated to each other.
 
+## Support Vector Machines (SVM)
+
+- The core idea of SVM is to find a maximum marginal hyperplane(MMH) that best divides the dataset into classes.
+- Kernel trick when not linearly separable.
+- Hyperparameters:
+  - Kernel: Linear, Polynomial, Radial Basis Function (RBF)
+  - Regularization
+  - Gamma (how far points consider in calculating separation line)
+
+Pros | Cons
+-----|-----
+Good accuracy | Not suitable for large datasets (high training time)
+Faster prediction than Naive Bayes | Slower training than NB
+Low memory | Works poorly with overlapping classes
+Works well with clear spearation and high dimensional space | Sensitive to the type of kernel used
