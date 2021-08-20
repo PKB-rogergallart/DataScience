@@ -47,9 +47,16 @@ Pros | Cons
 More flexible than K-means </br> in terms of cluster covariance | You need to select how </br>many groups there are
 Allows mixed membership | _
 
-## Agglomerative Hierarchical Clustering
+## Hierarchical Agglomerative Clustering (HAC)
+- Bottom-up algorithm: treats each point as single cluster and successively merges pairs of clusters.
+- Parameter: distance metric (e.g. average linkage = avg distance between points in first cluster and points in second cluster), number of clusters
+- We start considering each data point as a cluster. On each iteration we combine the two clusters with the smallest distance metric. We repeat until we reach the top of the tree (we only have one cluster). We can stop building the tree once we have the desired number of clusters.
 
-
+Pros | Cons
+-----|-----
+No need to specify number of clusters in advance | Higher complexity *O(n^3)* although </br>some implementations *O(n^2)*
+Not sensitive to the choice of distance metric | _
+Good when underlying data has hierarchical structure | _
 
 Sources: 
 
