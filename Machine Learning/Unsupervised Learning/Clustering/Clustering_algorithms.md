@@ -40,6 +40,12 @@ Any size and cluster shape | Bad performance in </br>very high-dimensional data
 - GMM assume the data points are Gaussian distributed (which is less restrictive assumption than saying they are circular lie K-means). Instead of only using mean, now we have mean and standard deviation (for each direction).
 - Clusters can have any king of elliptical shape (vs K-means which assume circular shapes)
 - EM is the optimization algorithm used to find the mean and SD of the Gaussian for each cluster.
+- Procedure very similar to K-means. We select the number of clusters and randomly initialize Gaussian parameters for each. Given the Gaussian distributions, we compute the probability of each point to belong to each cluster. We calculate a weighted sum of the data point positions using the probabilities as weights, and use it to compute the new parameters. We repeat iteratively until convergence.
+
+Pros | Cons
+-----|-----
+More flexible than K-means </br> in terms of cluster covariance | You need to select how </br>many groups there are
+Allows mixed membership | _
 
 ## Agglomerative Hierarchical Clustering
 
