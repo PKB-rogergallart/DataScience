@@ -1,5 +1,44 @@
 # Clustering algorithms
 
+## Overview
+- Goal of clustering: identify **Meaningfulness** (expand domain knowledge) and **Usefulness** (serve as intermediate step in data pipeline).
+
+- Types of clustering algorithms:
+  - Partitional clustering: 
+    - Divides all data objects into non-overlapping groups.
+    - Examples: k-means, k-medoids
+
+    Pros | Cons
+    -----|-----
+    Good for sperical shaped clusters | Not well suited for clusters with complex shapes and different sizes
+    Scalable w/r to complexity | Non-deterministic (all?)
+    _ | You need to select how </br>many groups there are
+    _ | Break down when clusters of different densities
+
+
+  - Hierarchical clustering:
+    - Produces a tree-based hierarchy (dendrogram)
+    - Two approaches: agglomerative clustering (bottom-up) or divisive clustering (top-down)
+    - Examples:
+
+    Pros | Cons
+    -----|-----
+    Deterministic | High algorithm complexity
+    Can reveal relationships | Sensitive to noise and outliers
+    _ | You need to select how </br>many groups there are
+
+  - Density-based clustering:
+    - Clusters are assigned where there are high densities of data points separated by low-density regions.
+    - Does not require the user to determine the number of clusters. 
+    - Distance-based parameter acts as tunable threshold
+    - Examples: DBSCAN, OPTICS.
+
+    Pros | Cons
+    -----|-----
+    Does not require user to specify k | Not well suited for high dimensional spaces
+    Work with non-sperical shapes | Trouble identifying clusters of varying densities
+    Resistant to outliers | You need to select how </br>many groups there are
+    
 ## K-Means clustering
 
 - We initialize randomly the center points for each group. Then we calculate the distance between each sample and each group centerand we classify the point to be in the group whose center is closest. We recompute the group centers and iterate until the centers don't change much or for a certain fixed number of iterations.
@@ -49,14 +88,29 @@ Allows mixed membership | _
 
 ## Hierarchical Agglomerative Clustering (HAC)
 - Bottom-up algorithm: treats each point as single cluster and successively merges pairs of clusters.
-- Parameter: distance metric (e.g. average linkage = avg distance between points in first cluster and points in second cluster), number of clusters
+- Parameter: linkage criteria and distance metric (e.g. average linkage = avg distance between points in first cluster and points in second cluster), number of clusters
 - We start considering each data point as a cluster. On each iteration we combine the two clusters with the smallest distance metric. We repeat until we reach the top of the tree (we only have one cluster). We can stop building the tree once we have the desired number of clusters.
+
+Linkage criteria (== distance between two clusters):
+- Single linkage: the shortest distance between two points in each cluster.
+- Complete linkage: the longest distance between two points in each cluster.
+- Average linkage: the average distance between each point in one cluster to every point in another cluster.
+- Ward linkage: the sum of squared differences within all clusters.
+
+Distance metric:
+- Euclidean distance
+- Manhattan distance
 
 Pros | Cons
 -----|-----
 No need to specify number of clusters in advance | Higher complexity *O(n^3)* although </br>some implementations *O(n^2)*
 Not sensitive to the choice of distance metric | _
 Good when underlying data has hierarchical structure | _
+
+References:
+https://towardsdatascience.com/machine-learning-algorithms-part-12-hierarchical-agglomerative-clustering-example-in-python-1e18e0075019
+https://www.analyticsvidhya.com/blog/2019/05/beginners-guide-hierarchical-clustering/
+
 
 Sources: 
 
