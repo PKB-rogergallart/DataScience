@@ -40,8 +40,10 @@
     Resistant to outliers | You need to select how </br>many groups there are
     
 ## K-Means clustering
-
+- Uses Expectation-Maximization algorithm (EM).
 - We initialize randomly the center points for each group. Then we calculate the distance between each sample and each group centerand we classify the point to be in the group whose center is closest. We recompute the group centers and iterate until the centers don't change much or for a certain fixed number of iterations.
+- Quality of the cluster assignments can be determined using Sum of squared error (SSE).
+- As it is non-deterministic, usually we run it several times using different initializations, and choose the solution with lowest SSE.
 
 Pros | Cons
 -----|-----
@@ -50,6 +52,18 @@ Fast, *O(n)* | You need to select how </br>many groups there are
 
 Alternative:  K-Medians which is less sensitive to outliers but is much slower for larger datasets (because it required sorting in each iteration)
 
+```python
+from sklearn.cluster import KMeans
+
+kmeans = KMeans(init="random", n_clusters=3, n_init=10, max_iter=300, random_state=42)
+
+kmeans.fit(scaled_features)
+
+kmeans.inertia_   # Lowest SSE value
+kmeans.cluster_centers_  # Final locations of the centroid
+kmeans.n_iter_  # The number of iterations required to converge
+kmeans.labels_ # Cluster assignments (numpy array)   
+```
 ## Mean-Shift clustering
 
 - Sliding-window-based centroid-based density-based algorithm.
