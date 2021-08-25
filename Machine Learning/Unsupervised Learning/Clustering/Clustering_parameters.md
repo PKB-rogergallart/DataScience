@@ -35,6 +35,17 @@ Source: https://towardsdatascience.com/machine-learning-algorithms-part-12-hiera
 2. Draw a horizontal line at both extremities.
 3. The optimal number of clusters is equal to the number of vertical lines going through the horizontal line
 
+```python
+from sklearn.cluster import AgglomerativeClustering
+import scipy.cluster.hierarchy as sch
+
+dendrogram = sch.dendrogram(sch.linkage(X, method='ward'))
+# Visually we determine the optimal number of clusters = 5
+
+model = AgglomerativeClustering(n_clusters=5, affinity='euclidean', linkage='ward')
+model.fit(X)
+labels = model.labels_
+```
 
 ## Evaluating clustering performance
 Source: https://realpython.com/k-means-clustering-python/#evaluating-clustering-performance-using-advanced-techniques
