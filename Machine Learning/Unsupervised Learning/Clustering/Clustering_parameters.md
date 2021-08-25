@@ -5,9 +5,9 @@
 Source: https://realpython.com/k-means-clustering-python/#choosing-the-appropriate-number-of-clusters
 
 ### Elbow method
-- Run several k-means incrementing k in each iteration and record SSE for each
-- Plot SEE vs number of clusters k.
-- Find the point where the SEE curve starts to bend down (elbow point) either manually (visually) or programmatically.
+1. Run several k-means incrementing k in each iteration and record SSE for each
+2. Plot SEE vs number of clusters k.
+3. Find the point where the SEE curve starts to bend down (elbow point) either manually (visually) or programmatically.
 
 ```python
 !pip install kneed
@@ -29,8 +29,10 @@ score = silhouette_score(scaled_features, kmeans.labels_).round(2)
 ```
 
 ## Evaluating clustering performance
+Source: https://realpython.com/k-means-clustering-python/#evaluating-clustering-performance-using-advanced-techniques
 
 ### Adjusted Rand Index (ARI) using ground truth labels
+
 - Values range between -1 and 1, being 0 == random assignments and 1 == perfectly labeled clusters.
 
 ```python
