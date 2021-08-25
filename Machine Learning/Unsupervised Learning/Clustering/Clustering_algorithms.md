@@ -23,9 +23,9 @@
 
     Pros | Cons
     -----|-----
-    Deterministic | High algorithm complexity
-    Can reveal relationships | Sensitive to noise and outliers
-    _ | You need to select how </br>many groups there are
+    Deterministic | High algorithm complexity (slow for large datasets)
+    Can reveal meaningful taxonomies and relationships | Sensitive to noise and outliers
+    No assumption of a particular number of clusters | You need to decide how </br>many groups there are
 
   - Density-based clustering:
     - Clusters are assigned where there are high densities of data points separated by low-density regions.
