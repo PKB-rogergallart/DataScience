@@ -28,6 +28,14 @@ from sklearn.metrics import silhouette_score
 score = silhouette_score(scaled_features, kmeans.labels_).round(2)
 ```
 
+### Dendrograms (only in Hierarchical Clustering)
+Source: https://towardsdatascience.com/machine-learning-algorithms-part-12-hierarchical-agglomerative-clustering-example-in-python-1e18e0075019
+
+1. Determine the largest vertical distance on the dendrogram that does not intersect any of the other clusters.
+2. Draw a horizontal line at both extremities.
+3. The optimal number of clusters is equal to the number of vertical lines going through the horizontal line
+
+
 ## Evaluating clustering performance
 Source: https://realpython.com/k-means-clustering-python/#evaluating-clustering-performance-using-advanced-techniques
 
