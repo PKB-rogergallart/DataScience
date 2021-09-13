@@ -7,6 +7,7 @@
 ## Number of neuros per hidden layer
   - Input and Output defined by type of problem
   - Usually better results increasing number layers than number of neurons
+  - large neural networks almost never get stuck in local minima, and even when they do these local optima are almost as good as the global optimum. However, they can still get stuck on long plateaus for a long time.
 ## Hyperparameters
 - learning rate: 
     - in general, optimal LR is around 1/2 the maximum LR (when the algorithm diverges)
@@ -24,3 +25,4 @@
     - use Early Stopping technique
 
 To READ: https://arxiv.org/abs/1803.09820
+Resources: https://playground.tensorflow.org/
