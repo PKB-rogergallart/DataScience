@@ -4,7 +4,7 @@
 - DNN suffer from unstable gradients, different layers may learn at widely different speeds. Eg: Vanishing gradients problem in lower layers, Exploding gradients problem in RNN.
 - Causes: activation function (e.g. sigmoid) and initialization scheme
 
-### 1.1 Glorot (Xavier), Lecun and He Initializations
+### Glorot (Xavier), Lecun and He Initializations
 - Terminology: fan_in = number of inputs, fan_out = number of outputs (= number of neurons in MLP)
 - We need variance to the ouputs be equal to variance of the inputs, and we need the gradients to have equal variance before and after flowing through a layer in the reverse direction.
 - Xavier initialization (or Glorot initialization):
@@ -105,7 +105,9 @@ keras.layers.Dense(10, activation="softmax")
 
 ```python
 
-optimizer = keras.optimizers.SGD(clipvalue=1.0)
+optimizer = keras.optimizers.SGD(clipvalue=1.0) #Clips gradient components between -1 and +1
+optimizer = keras.optimizers.SGD(clipnorm=1.0) #Clips gradient components using L2 norm, preserving orientation
+
 model.compile(loss="mse", optimizer=optimizer)
 
 ```
