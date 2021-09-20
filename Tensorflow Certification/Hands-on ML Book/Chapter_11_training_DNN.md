@@ -192,7 +192,7 @@ optimizer = keras.optimizers.SGD(lr=0.001, momentum=0.9, nesterov=True)
 
   ![AdaGrad_Algorithm](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/AdaGrad_algorithm.jpg)
   
-  - It corrects its direction earlier to point a bit more toward the global optimium by scaling down the gradient vector along the steepest dimensions. It decays the learning rate faster for steep dimensions than for dimensions with gentler slopes (adaptive learning rate).
+  - It corrects its direction earlier to point a bit more toward the global optimium by scaling down the gradient vector along the steepest dimensions. It decays the learning rate faster for steep dimensions than for dimensions with gentler slopes **(adaptive learning rate)**.
   - Works well for simple quadratic problems but often stops too early when trianing neural networks. **It should not be used to train deep neural networks.**
 
 ### RMSProp
@@ -200,6 +200,7 @@ optimizer = keras.optimizers.SGD(lr=0.001, momentum=0.9, nesterov=True)
   ![RMSProp](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/RMSProp_algorithm.jpg)
   
 - Fixes the problems of AdaGrad by accumulating only the gradients from the most recent iterations using an exponential decay.
+- **Adaptive learning rate**
 - The hyperparameter &beta; (rho, in Keras) is typically set to 0.9.
 
 ```python
@@ -211,4 +212,64 @@ optimizer = keras.optimizers.RMSprop(lr=0.001, rho=0.9)
   ![Adam_algorithm](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/Adam_algorithm.jpg)
   
 - Adam (Adaptive Moment Estimation) combines the ideas of momentum optimization and RMSProp. It keeps tract of an exponentially decaying average of past gradients (like momentum optimization) and also of an exponentially decaying average of past squared gradients (like RMSProp).
+- **Adaptive learning rate**
+
+```python
+optimizer = keras.optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999) #Typical values
+
+# Epsilon value = keras.backend.epsilon() = 1E-7. 
+# To change it use keras.backend.set_epsilon()
+```
+
+- Variants:
+  - Adamax: uses L_&infinity; norm ('max' norm) in step 2
+  - Nadam: Adam + Nesterov trick
+
+
 ### Learning Rate Scheduling
+This technique consists in modifying the initial learning rate during training using different strategies, typically starting with a large value and decreasing it later.
+
+- Power scheduling
+
+  ```python
+  optimizer = keras.optimizers.SGD(lr=0.01, decay=1e-4)
+  # Keras assumes that c=1
+  # decay is the inverse of s (number of steps)
+  ```
+- Exponential scheduling
+
+```python
+# function that takes current epoch and return the learning rate
+def exponential_decay_fn(epoch):
+  return 0.01 * 0.1**(epoch / 20)
+
+# Aternative if you don't want to hardcode lr0 and s:
+def exponential_decay(lr0, s):
+  def exponential_decay_fn(epoch):
+    return lr0 * 0.1**(epoch / s)
+  return exponential_decay_fn
+exponential_decay_fn = exponential_decay(lr0=0.01, s=20)
+
+# Create a LearningRateScheduler callback and pass it to the fit() method:
+lr_scheduler = keras.callbacks.LearningRateScheduler(exponential_decay_fn)
+history = model.fit(X_train_scaled, y_train, [...], callbacks=[lr_scheduler])
+```
+- Piecewise constant scheduling
+
+```python
+def piecewise_constant_fn(epoch):
+  if epoch < 5:
+    return 0.01
+  elif epoch < 15:
+    return 0.005
+  else:
+    return 0.001
+ 
+ # Same reasoning a previous strategy but using this schedule function
+ ```
+ 
+- Performance scheduling: reduce the learning rate by a factor when the validation error stops dropping.
+```python
+lr_scheduler = keras.callbacks.ReduceLROnPlateau(factor=0.5, patience=5)
+```
+- 1cycle scheduling: https://arxiv.org/abs/1803.09820
