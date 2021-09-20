@@ -164,11 +164,30 @@ first neural network’s lower layers will learn feature detectors that will lik
 
 ## 3. Fast Optimizers (alternatives to regular Gradient Descent)
 
-Regular Gradient Descent:
+### Regular Gradient Descent:
+
+  ![Gradient_Descent](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/Gradient_Descent_algorithm.jpg)
 
 ### Momentum Optimization
 
-### Nesterov Accelerated Gradient
+  ![Momentum_Algorithm](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/Momentum_algorithm.jpg)
+- The gradient is used for acceleration, not for speed.
+- the hyperparameter &#946; called *momentum* is used as some sort of friction (0=high friction, 1=no friction). Typical value is 0.9 
+
+```python
+optimizer = keras.optimizers.SGD(lr=0.001, momentum=0.9)
+```
+
+### Nesterov Accelerated Gradient (NAG)
+
+  ![Nesterov_Accelerated_Gradient](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/NAG_algorithm.jpg)
+
+- It measures the gradient of the cost function not at the local position &theta; but slightly ahead in the direction of the momentum
+
+```python
+optimizer = keras.optimizers.SGD(lr=0.001, momentum=0.9, nesterov=True)
+```
+
 ### AdaGrad
 ### RMSProp
 ### Adam and Nadam Optimization
