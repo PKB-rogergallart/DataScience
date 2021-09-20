@@ -188,7 +188,27 @@ optimizer = keras.optimizers.SGD(lr=0.001, momentum=0.9)
 optimizer = keras.optimizers.SGD(lr=0.001, momentum=0.9, nesterov=True)
 ```
 
-### AdaGrad
+### AdaGrad (DO NOT USE)
+
+  ![AdaGrad_Algorithm](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/AdaGrad_algorithm.jpg)
+  
+  - It corrects its direction earlier to point a bit more toward the global optimium by scaling down the gradient vector along the steepest dimensions. It decays the learning rate faster for steep dimensions than for dimensions with gentler slopes (adaptive learning rate).
+  - Works well for simple quadratic problems but often stops too early when trianing neural networks. **It should not be used to train deep neural networks.**
+
 ### RMSProp
+
+  ![RMSProp](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/RMSProp_algorithm.jpg)
+  
+- Fixes the problems of AdaGrad by accumulating only the gradients from the most recent iterations using an exponential decay.
+- The hyperparameter &beta; (rho, in Keras) is typically set to 0.9.
+
+```python
+optimizer = keras.optimizers.RMSprop(lr=0.001, rho=0.9)
+```
+
 ### Adam and Nadam Optimization
+
+  ![Adam_algorithm](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/Adam_algorithm.jpg)
+  
+- Adam (Adaptive Moment Estimation) combines the ideas of momentum optimization and RMSProp. It keeps tract of an exponentially decaying average of past gradients (like momentum optimization) and also of an exponentially decaying average of past squared gradients (like RMSProp).
 ### Learning Rate Scheduling
