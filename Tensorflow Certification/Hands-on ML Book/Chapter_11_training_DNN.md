@@ -292,3 +292,37 @@ optimizer = keras.optimizers.SGD(learning_rate)
 Pros: simple and when you save the model, the learning rate and its schedule get saved too.
 Cons: not part of the Keras API
 
+## 4. Avoid overfitting through regularization
+
+### Early stopping
+
+### Batch Normalization
+Designed to solve unstable gradients problems, but also acts like a pretty good regularizer.
+
+### L1 and L2 Regularization
+L2 to contrain NN weights, L1 to get a sparse model.
+
+```python
+# L2 regularization with regularization factor of 0.01
+layer = keras.layers.Dense(100, activation="elu", kernel_initializer="he_normal", kernel_regularizer=keras.regularizers.l2(0.01))
+
+# For L1 use keras.regularizers.l1()
+# For L1 and L2 use keras.regularizers.l1_l2()
+```
+Typically you apply same regularizer to all layers and use the same activation function and the same initialization strategy in all hidden layers. To avoid repeating code:
+
+```python
+from functools import partial
+
+RegularizedDense = partial(keras.layers.Dense, activation="elu", kernel_initializer="he_normal", kernel_regularizer=keras.regularizers.l2(0.01))
+
+model = keras.models.Sequential([
+  keras.layers.Flatten(input_shape=[28, 28]),
+  RegularizedDense(300),
+  RegularizedDense(100),
+  RegularizedDense(10, activation="softmax", kernel_initializer="glorot_uniform")
+])
+```
+### Dropout Regularization
+
+### Max-norm Regularization
