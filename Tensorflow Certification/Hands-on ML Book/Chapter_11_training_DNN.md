@@ -325,4 +325,61 @@ model = keras.models.Sequential([
 ```
 ### Dropout Regularization
 
+```python
+model = keras.models.Sequential([
+  	keras.layers.Flatten(input_shape=[28, 28]),
+    keras.layers.Dropout(rate=0.2),
+    keras.layers.Dense(300, activation="elu", kernel_initializer="he_normal"),
+    keras.layers.Dropout(rate=0.2),
+    keras.layers.Dense(100, activation="elu", kernel_initializer="he_normal"),
+    keras.layers.Dropout(rate=0.2),
+    keras.layers.Dense(10, activation="softmax")
+])
+```
+- In practice you can usually apply droput only to the top 1 to 3 layers (excluding the output layer)
+- Dropout tends to slow down convergence but usually results in a much better model.
+- For self-normalizing networks based on SELU, use *alpha dropout* which preserves the mean and SD of the inputs.
+
+**IMPORTANT**: dropout is active only during training. So comparing the training loss and the validation loss can be misleading. If you need to evaluate the training loss, remember to do it without dropout (e.g. after training).
+
+**MONTE CARLO Dropout**
+Allows to improve the performance of any trained dropout model without having to retrain it.
+
+```python
+# We make 100 predictions but with dropout enabled ! Then we average
+y_probas = np.stack([model.predict(X_test_scaled, training=True) for sample in range(100)])
+y_proba = y_probas.mean(axis=0)
+````
+
+If the model contains other layers that behave differently during training (e.g. BN layers), you should replace the *Dropout* layers with the following class:
+
+```python
+class MCDropout(keras.layers.Dropout):
+  def call(self, inputs):
+    return super().call(inputs, training=True)
+```
+
 ### Max-norm Regularization
+At each training step it computes the L2 norm of the **w**, and if it is higher than r (max-norm hyperparameter), it rescales **w** using:
+
+![Max_norm](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/Max-norm_regularization.jpg)
+
+- Reducing *r* increases regularization and helps reduce overfitting. It can also help alleviate unstable gradient problems (if BN is not used).
+
+```python
+keras.layers.Dense(100, activation="elu", kernel_initializer="he_normal",kernel_constraint=keras.constraints.max_norm(1.))
+
+# Important: max_norm() has axis argument that defaults to 0 which suites dense fully-connected NN. 
+# For CNN, male sure to set this argument appropriately, usually axis=[0, 1, 2]
+```
+
+## TIPS
+
+![DNN_Defaults](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/DNN_default_config.jpg)
+
+![DNN_SeldNorm_Defaults](https://github.com/PKB-rogergallart/DataScience/blob/main/Assets/DNN_self-normalizing-default_config.jpg)
+
+- Don't forget to normalize input features
+- If you need sparse model: you can use L1 regularization or the TensorFlow Model Optimization Toolkit (TF-MOT). Note: no self-normalization, so use default config.
+- If you need low-latency model: use fewer layers, fold the BN layers into the previous layers, and use LeakyReLU or ReLU. Reduce float precision from 32 bits to 16 or 8. Check out TF-MOT.
+- If risk-sensitive application and latency not important, use MC-Droput to get more reliable estimates.
