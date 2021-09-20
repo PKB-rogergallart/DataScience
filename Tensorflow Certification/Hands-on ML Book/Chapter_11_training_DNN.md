@@ -1,6 +1,8 @@
 # Chapter 11 - Training Deep Neural Networks
 
-## 1. Vanishing/Exploding Gradient
+Techniques to speed up training and reach a better solution:
+
+## 1. Techniques to avoid Vanishing/Exploding Gradient
 - DNN suffer from unstable gradients, different layers may learn at widely different speeds. Eg: Vanishing gradients problem in lower layers, Exploding gradients problem in RNN.
 - Causes: activation function (e.g. sigmoid) and initialization scheme
 
@@ -112,3 +114,62 @@ model.compile(loss="mse", optimizer=optimizer)
 
 ```
 
+## 2. Reusing Pretrained Layers
+
+### Transfer Learning
+- Transfer Learning works best with deep CNN and worst with small dense networks.
+- The more similar the tasks are, the more layers you have to reuse (starting from the lower layers).
+- Add new layers on top of the reused one. Freeze the reused layers and train the model to see how it performs.
+- Try unfreezing reused layers progressively and see how performance improves. Reduce the learning rate to avoid damaging thereused weights. The more data you have the more layers you can unfreeze.
+- IMPORTANT: you must always compile your model after you freeze/unfreeze layers
+
+```python
+# EXAMPLE:
+
+# clone structure of model A to avoid overwriting and copy weights
+model_A = keras.models.load_model("my_model_A.h5")
+model_A_clone = keras.models.clone_model(model_A) 
+model_A_clone.set_weights(model_A.get_weights()) # copy weights
+
+# Take all layers from A_clone except the output one and add new output layer
+model_B_on_A = keras.models.Sequential(model_A_clone.layers[:-1]) 
+model_B_on_A.add(keras.layers.Dense(1, activation="sigmoid"))
+
+# Freeze all reused layers and compile the model
+for layer in model_B_on_A.layers[:-1]:
+  layer.trainable = False
+model_B_on_A.compile(loss="binary_crossentropy", optimizer="sgd", metrics=["accuracy"])
+
+# Train the model (output layer) for a few epochs
+history = model_B_on_A.fit(X_train_B, y_train_B, epochs=4, validation_data=(X_valid_B, y_valid_B))
+
+# Unfreeze reused layers and compile with a lower learning rate
+for layer in model_B_on_A.layers[:-1]:
+  layer.trainable = True
+optimizer = keras.optimizers.SGD(lr=1e-4) # the default lr is 1e-2
+model_B_on_A.compile(loss="binary_crossentropy", optimizer=optimizer, metrics=["accuracy"])
+
+# Keep training
+history = model_B_on_A.fit(X_train_B, y_train_B, epochs=16, validation_data=(X_valid_B, y_valid_B))
+```
+
+
+### Unsupervised Pretraining
+
+
+### Pretraining on an Auxiliary Task
+If you do not have much labeled training data, one last option is to train a first neural network on an auxiliary task for which you can easily obtain or generate labeled training data, then reuse the lower layers of that network for your actual task. The
+first neural network’s lower layers will learn feature detectors that will likely be reusable by the second neural network.
+
+
+## 3. Fast Optimizers (alternatives to regular Gradient Descent)
+
+Regular Gradient Descent:
+
+### Momentum Optimization
+
+### Nesterov Accelerated Gradient
+### AdaGrad
+### RMSProp
+### Adam and Nadam Optimization
+### Learning Rate Scheduling
