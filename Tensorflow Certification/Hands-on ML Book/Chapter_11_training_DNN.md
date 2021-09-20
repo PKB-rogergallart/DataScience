@@ -238,38 +238,57 @@ This technique consists in modifying the initial learning rate during training u
   ```
 - Exponential scheduling
 
-```python
-# function that takes current epoch and return the learning rate
-def exponential_decay_fn(epoch):
-  return 0.01 * 0.1**(epoch / 20)
-
-# Aternative if you don't want to hardcode lr0 and s:
-def exponential_decay(lr0, s):
+  ```python
+  # function that takes current epoch and return the learning rate
   def exponential_decay_fn(epoch):
-    return lr0 * 0.1**(epoch / s)
-  return exponential_decay_fn
-exponential_decay_fn = exponential_decay(lr0=0.01, s=20)
+    return 0.01 * 0.1**(epoch / 20)
 
-# Create a LearningRateScheduler callback and pass it to the fit() method:
-lr_scheduler = keras.callbacks.LearningRateScheduler(exponential_decay_fn)
-history = model.fit(X_train_scaled, y_train, [...], callbacks=[lr_scheduler])
-```
+  # Aternative if you don't want to hardcode lr0 and s:
+  def exponential_decay(lr0, s):
+    def exponential_decay_fn(epoch):
+      return lr0 * 0.1**(epoch / s)
+    return exponential_decay_fn
+  exponential_decay_fn = exponential_decay(lr0=0.01, s=20)
+
+  # Create a LearningRateScheduler callback and pass it to the fit() method:
+  lr_scheduler = keras.callbacks.LearningRateScheduler(exponential_decay_fn)
+  history = model.fit(X_train_scaled, y_train, [...], callbacks=[lr_scheduler])
+  ```
+  
 - Piecewise constant scheduling
 
-```python
-def piecewise_constant_fn(epoch):
-  if epoch < 5:
-    return 0.01
-  elif epoch < 15:
-    return 0.005
-  else:
-    return 0.001
- 
- # Same reasoning a previous strategy but using this schedule function
- ```
+  ```python
+  def piecewise_constant_fn(epoch):
+    if epoch < 5:
+      return 0.01
+    elif epoch < 15:
+      return 0.005
+    else:
+      return 0.001
+
+   # Same reasoning a previous strategy but using this schedule function
+   ```
  
 - Performance scheduling: reduce the learning rate by a factor when the validation error stops dropping.
+
+  ```python
+  lr_scheduler = keras.callbacks.ReduceLROnPlateau(factor=0.5, patience=5)
+  ```
+  
+- 1cycle scheduling: ToRead https://arxiv.org/abs/1803.09820
+  To implement it, create a custom callback that modified the LR at each iteration (update the Lr by changing *self.model.optimizer.lr*) 
+
+**ALTERNATIVE WAY TO IMPLEMENT LEARNING SCHEDULES IN KERAS (tf.keras)**
+Use one of the schedules available in *keras.optimizers.schedules*, then pass this learning rate to any optimizer
+
 ```python
-lr_scheduler = keras.callbacks.ReduceLROnPlateau(factor=0.5, patience=5)
+# EXAMPLE: EXPONENTIAL DECAY
+
+s = 20 * len(X_train) // 32 # number of steps in 20 epochs (batch size = 32)
+learning_rate = keras.optimizers.schedules.ExponentialDecay(0.01, s, 0.1) 
+optimizer = keras.optimizers.SGD(learning_rate)
+
 ```
-- 1cycle scheduling: https://arxiv.org/abs/1803.09820
+Pros: simple and when you save the model, the learning rate and its schedule get saved too.
+Cons: not part of the Keras API
+
