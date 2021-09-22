@@ -149,3 +149,81 @@ class HuberMetric(keras.metrics.Metric):
     return {**base_config, "threshold": self.threshold}
 
 ```
+
+## Custom Layers
+
+### Custom Layers without weights (e.g. `keras.layers.Flatten`, `keras.layers.ReLU`)
+
+Write a function and wrap it in a `keras.layers.Lambda`layer.
+
+```python
+
+exponential_layer = keras.layers.Lambda(lambda x: tf.exp(x))
+
+```
+
+### Custom layers with weights (stateful layer)
+
+Create a subclass of the `keras.layers.Layer` class.
+
+```python
+
+class MyDense(keras.layers.Layer):
+  def __init__(self, units, activation=None, **kwargs):
+    super().__init__(**kwargs)
+    self.units = units
+    self.activation = keras.activations.get(activation)
+
+  def build(self, batch_input_shape):
+    self.kernel = self.add_weight(
+          name="kernel", shape=[batch_input_shape[-1], self.units],
+          initializer="glorot_normal")
+    self.bias = self.add_weight(
+          name="bias", shape=[self.units], initializer="zeros")
+    super().build(batch_input_shape) # must be at the end
+
+  def call(self, X):
+    return self.activation(X @ self.kernel + self.bias)
+
+  def compute_output_shape(self, batch_input_shape):
+    return tf.TensorShape(batch_input_shape.as_list()[:-1] + [self.units])
+
+def get_config(self):
+    base_config = super().get_config()
+    return {**base_config, "units": self.units,
+          "activation": keras.activations.serialize(self.activation)}
+
+```
+
+- To create a layer with multiple inputs, `call()` should receive as argument a tuple containing all inputs and return a list of outputs. And `compute_output_shape()` should receive as argument a tuple containing each input's batch shape, and return a list of batch output shapes.
+
+```python
+class MyMultiLayer(keras.layers.Layer):
+  def call(self, X):
+     X1, X2 = X
+     return [X1 + X2, X1 * X2, X1 / X2]
+
+  def compute_output_shape(self, batch_input_shape):
+     b1, b2 = batch_input_shape
+     return [b1, b1, b1] # should probably handle broadcasting rules
+```
+
+- If the layer needs to have different behavior during training and during testing, add a `training = None` argument to the `call()` method and use this argument to decide what to do (`if training: [...]`)
+
+### Custom models
+- Create a subclass of `keras.Model`.
+- Create the layers in the constructor `__init__()`.
+- Use the layers in the `call()` method.
+- To be able to save/load the model, implement the `get_config()` method in the custom model (and in the custom layers if any). Alternatively you can save and load the weights manually using `save_weights()` and `load_weights()`.
+
+## Losses and Metrics based on Model internals
+TBD
+
+## Computing gradients using Autodiff
+TBD
+
+## Custom training loops
+TBD
+
+## TensorFlow Functions and Graphs 
+TBD
